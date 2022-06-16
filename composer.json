@@ -1,0 +1,13 @@
+{
+    "name": "tarum/phpmvc-framework",
+    "authors": [{
+        "name": "siskal-man",
+        "email": "block-code@mail.ru"
+    }],
+    "autoload-dev": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "require": {}
+}
