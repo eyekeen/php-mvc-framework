@@ -14,14 +14,36 @@ class Application
     public Request $request;
     public Response $response;
     public static Application $app;
+    public Controller $controller;
     public function __construct($rootPath)
     {
         self::$ROOT_DIR = $rootPath;
         self::$app = $this;
         $this->request = new Request();
         $this->response = new Response();
-        $this->router = new Router($this->request);
+        $this->router = new Router($this->request, $this->response);
     }
+
+    /**
+     * 
+     * @return \app\core\Controller
+     */
+
+    public function getController(): \app\core\Controller
+    {
+        return $this->controller;
+    }
+
+    /**
+     * 
+     * @param \app\core\Controller $controller
+     */
+
+    public function setController(Controller $controller): void
+    {
+        $this->controller = $controller;
+    }
+
 
     public function run()
     {
