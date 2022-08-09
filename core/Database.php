@@ -24,8 +24,8 @@ class Database
         $this->createMigrationsTable();
         $appliedMigrations = $this->getAppliedMigrations();
 
-        
 
+        $newMigrations = [];
         $files = scandir(Application::$ROOT_DIR . '/migrations');
         $toApplyMigrations = array_diff($files, $appliedMigrations);
 
@@ -38,9 +38,16 @@ class Database
             require_once Application::$ROOT_DIR . '/migrations/' . $migration;
             $className = pathinfo($migration, PATHINFO_FILENAME);
             $instance = new $className();
-            echo "Applying migration $migration" . PHP_EOL;
+            $this->log("Applying migration $migration");
             $instance->up();
-            echo "Applied migration $migration" . PHP_EOL;
+            $this->log("Applied migration $migration");
+            $newMigrations[] = $migration;
+        }
+
+        if (!empty($newMigrations)) {
+            $this->saveMigrations($newMigrations);
+        } else {
+            $this->log("All migrations are applied");
         }
     }
 
@@ -60,5 +67,23 @@ class Database
         $statement->execute();
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
+    public function saveMigrations(array $migrations)
+    {
+
+        $str = implode(",", array_map(fn ($m) => "('$m')", $migrations));
+
+
+        $statement = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES
+            $str
+        ");
+
+        $statement->execute();
+    }
+
+    protected function log($message)
+    {
+        echo '[' . date("Y-m-d H:i:s") . '] - ' . $message . PHP_EOL;
     }
 }
