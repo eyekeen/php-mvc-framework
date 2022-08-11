@@ -38,12 +38,22 @@ use app\core\Application;
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/login">Login <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
-            </li>
+            <?php if (Application::isGuest()) : ?>
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="/login">Login <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+
+            <?php else: ?>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/logout">Welcome <?php echo Application::$app->user->getDisplayName(); ?>
+                        (Logout)
+                    </a>
+                </li>
+            <?php endif; ?>
         </ul>
     </div>
 </nav>
