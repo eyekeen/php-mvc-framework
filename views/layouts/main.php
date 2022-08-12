@@ -16,7 +16,7 @@ use app\core\Application;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
           integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title><?php echo $this->title; ?></title>
 </head>
 
 <body>
@@ -55,7 +55,7 @@ use app\core\Application;
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/logout">
-                        Logout
+                        Welcome <?php echo Application::$app->user->getDisplayName(); ?> (Logout)
                     </a>
                 </li>
             <?php endif; ?>
